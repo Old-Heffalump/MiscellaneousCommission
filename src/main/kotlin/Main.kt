@@ -15,7 +15,7 @@ fun maxMountLimitOtherCard(
     return maxMountLimitOtherCard < (amountOfPreviousTransfersMonth + transferAmount)
 }
 
-fun maxMountLimitOtherCardText(amountOfPreviousTransfersMonth: Int, maxMountLimitOtherCard: Int, transferAmount: Int): String {
+fun maxMountLimitOtherCardText(amountOfPreviousTransfersMonth: Int, maxMountLimitOtherCard: Int): String {
     return if (amountOfPreviousTransfersMonth > maxMountLimitOtherCard){
         // Добавил условие проверки превышения лимита уже в amountOfPreviousTransfersMonth
         "Лимит транзакция превышен! Вы не можете совершать переводы по этой платёжной системе до конца месяца."
@@ -57,7 +57,6 @@ fun translations(amountOfPreviousTransfersMonth: Int = 0, transferAmount: Int, c
                 (maxMountLimitOtherCardText(  // текст который должен вернутся
                     amountOfPreviousTransfersMonth,
                     maxMountLimitOtherCard,
-                    transferAmount
                 ))
 
             } else {
@@ -87,7 +86,7 @@ fun translations(amountOfPreviousTransfersMonth: Int = 0, transferAmount: Int, c
                     amountOfPreviousTransfersMonth,
                     transferAmount,
                     maxMountLimitOtherCard)) {
-                (maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitOtherCard, transferAmount ))
+                (maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitOtherCard ))
             } else {
                 val commission: Double = transferAmount * taxMountVisa
                 if (commission < minCommissionVisa) {
@@ -103,7 +102,7 @@ fun translations(amountOfPreviousTransfersMonth: Int = 0, transferAmount: Int, c
                 return maximumInOneTransactionText(maximumInOneTransactionVKPay)
             }
             return if (maxMountLimitOtherCard(amountOfPreviousTransfersMonth, transferAmount, maxMountLimitVkPay)) {
-                maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitVkPay, transferAmount)
+                maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitVkPay)
             } else {
                 "Комиссия не взимается"
             }
