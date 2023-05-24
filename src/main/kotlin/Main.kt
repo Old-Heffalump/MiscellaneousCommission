@@ -1,26 +1,22 @@
-fun main(args: Array<String>) {
+fun main() {
     println(translations(12000, 10000, "Visa"))
     println(translations(0, 170_000, "Мир"))
     println(translations(29_000, 19000, ))
-    println(translations(59_000, 18000, "Mastercard"))
+    println(translations(5_000, 18000, "Mastercard"))
 
 
 }
 
-fun maxMountLimitOtherCard(
-    amountOfPreviousTransfersMonth: Int,
-    transferAmount: Int,
-    maxMountLimitOtherCard: Int
-): Boolean {
-    return maxMountLimitOtherCard < (amountOfPreviousTransfersMonth + transferAmount)
+fun maxMountLimitOtherCard(amountOfPreviousTransfersMonth: Int, transferAmount: Int, maxMountLimitOtherCards: Int): Boolean {
+    return maxMountLimitOtherCards < (amountOfPreviousTransfersMonth + transferAmount)
 }
 
 fun maxMountLimitOtherCardText(amountOfPreviousTransfersMonth: Int, maxMountLimitOtherCard: Int): String {
     return if (amountOfPreviousTransfersMonth > maxMountLimitOtherCard){
         // Добавил условие проверки превышения лимита уже в amountOfPreviousTransfersMonth
-        "Лимит транзакция превышен! Вы не можете совершать переводы по этой платёжной системе до конца месяца."
+        "Лимит транзакций превышен! Вы не можете совершать переводы по этой платёжной системе до конца месяца."
     } else {
-    "Лимит транзакция превышен! Остаток для переводов в месяц составляет " + (maxMountLimitOtherCard - amountOfPreviousTransfersMonth) + " руб."
+    "Лимит транзакций превышен! Остаток для переводов в месяц составляет " + (maxMountLimitOtherCard - amountOfPreviousTransfersMonth) + " руб."
 }}
 
 fun maximumInOneTransaction(maximumInOneTransactionCards: Int, transferAmount: Int): Boolean {
