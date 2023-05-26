@@ -1,13 +1,19 @@
 package ru.nethology
 
+import additionalCommissionMaster
 import maxMountLimitOtherCard
 import maxMountLimitOtherCardText
+import maxMountLimitVkPay
+import maxNoTaxMountMaster
 import maximumInOneTransaction
+import maximumInOneTransactionCards
 import maximumInOneTransactionText
+import minCommissionVisa
 import translations
 import org.junit.Test
 
 import org.junit.Assert.*
+import taxMaster
 
 class MainKtTest {
     @Test
@@ -113,6 +119,16 @@ class MainKtTest {
     }
 
     @Test
+    fun translationsVisaTreePositive() {
+        val amountOfPreviousTransfersMonth = 10_000
+        val transferAmount = 2_000_000
+        val cardType = "Visa"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        assertEquals(maximumInOneTransactionText(maximumInOneTransactionCards), result)
+    }
+
+    @Test
     fun translationsTreePositive() {
         val amountOfPreviousTransfersMonth = 12_000
         val transferAmount = 10_000
@@ -144,4 +160,90 @@ class MainKtTest {
             result
         )
     }
+
+    @Test
+    fun translationsMaserIfTrue() {
+        val amountOfPreviousTransfersMonth = 10_000
+        val transferAmount = 1_800_000
+        val cardType = "Mastercard"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        assertEquals(
+            maximumInOneTransactionText(maximumInOneTransactionCards),
+            result
+        )
+    }
+    @Test
+    fun translationsVkPayNoCommision() {
+        val amountOfPreviousTransfersMonth = 35_000
+        val transferAmount = 5_000
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount)
+        assertEquals(
+            "Комиссия не взимается",
+            result
+        )
+    }
+    @Test
+    fun translationsMaserTransferUpperLimit() {
+        val amountOfPreviousTransfersMonth = 75_000
+        val transferAmount = 10_000
+        val cardType = "Mastercard"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        assertEquals(
+            "Комиссия " + (transferAmount * taxMaster + additionalCommissionMaster) + " руб",
+        result
+        )
+    }
+
+    @Test
+    fun translationsVisaElsePositive() {
+        val amountOfPreviousTransfersMonth = 10_000
+        val transferAmount = 2_000
+        val cardType = "Visa"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        assertEquals("Комиссия $minCommissionVisa руб", result)
+    }
+
+    @Test
+    fun translationsMaserIfTrueMax() {
+        val amountOfPreviousTransfersMonth = 60_000
+        val transferAmount = 20_000
+        val cardType = "Mastercard"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        val balanceAfterLimit: Int = (amountOfPreviousTransfersMonth + transferAmount) - maxNoTaxMountMaster
+
+        assertEquals(
+            "Комиссия " + (balanceAfterLimit * taxMaster + additionalCommissionMaster) + " руб",
+            result
+        )
+    }
+    @Test
+    fun translationsVisaReturnIf() {
+        val amountOfPreviousTransfersMonth = 599_000
+        val transferAmount = 2_000
+        val cardType = "Visa"
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount, cardType)
+
+        assertEquals(maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitOtherCard ), result)
+    }
+
+    @Test
+    fun translationsVisaReturnIfClose() {
+        val amountOfPreviousTransfersMonth = 400_001
+        val transferAmount = 2_000
+
+        val result = translations(amountOfPreviousTransfersMonth, transferAmount)
+
+        assertEquals(maxMountLimitOtherCardText(amountOfPreviousTransfersMonth, maxMountLimitVkPay), result)
+    }
+
+
+
+
+
+
+
 }

@@ -2,7 +2,6 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.8.21"
     id 'application'
     id 'jacoco'
-    id 'java'
 }
 
 group = 'ru.netology'
@@ -14,7 +13,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
 //kotlin {

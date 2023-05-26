@@ -3,9 +3,20 @@ fun main() {
     println(translations(0, 170_000, "Мир"))
     println(translations(29_000, 19000, ))
     println(translations(5_000, 18000, "Mastercard"))
+    println(translations(75_000, 10000, "Mastercard"))
 
 
 }
+
+const val maxNoTaxMountMaster: Int = 75_000
+const val taxMaster: Double = 0.006
+const val taxMountVisa: Double = 0.0075
+const val minCommissionVisa: Int = 35
+const val maxMountLimitVkPay = 40_000
+const val maxMountLimitOtherCard = 600_000
+const val additionalCommissionMaster = 20
+const val maximumInOneTransactionCards = 150_000
+const val maximumInOneTransactionVKPay = 15_000
 
 fun maxMountLimitOtherCard(amountOfPreviousTransfersMonth: Int, transferAmount: Int, maxMountLimitOtherCards: Int): Boolean {
     return maxMountLimitOtherCards < (amountOfPreviousTransfersMonth + transferAmount)
@@ -30,15 +41,7 @@ fun maximumInOneTransactionText(maximumInOneTransactionCards: Int): String {
 }
 
 fun translations(amountOfPreviousTransfersMonth: Int = 0, transferAmount: Int, cardType: String = "VkPay"): String {
-    val maxNoTaxMountMaster: Int = 75_000
-    val taxMaster: Double = 0.006
-    val taxMountVisa: Double = 0.0075
-    val minCommissionVisa: Int = 35
-    val maxMountLimitVkPay = 40_000
-    val maxMountLimitOtherCard = 600_000
-    val additionalCommissionMaster = 20
-    val maximumInOneTransactionCards = 150_000
-    val maximumInOneTransactionVKPay = 15_000
+
     when (cardType) {
         "Mastercard", "Maestro" -> {
             if (maximumInOneTransaction(maximumInOneTransactionCards,transferAmount ))  {
